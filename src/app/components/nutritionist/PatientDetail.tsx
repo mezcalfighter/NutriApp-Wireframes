@@ -525,7 +525,7 @@ export default function PatientDetail() {
                   </span>
                   <span className="text-slate-600 dark:text-slate-400">
                     {' '}
-                    para responder (plazo legal: 20 días hábiles)
+                    para responder (plazo legal: veinte días)
                   </span>
                 </p>
               </div>

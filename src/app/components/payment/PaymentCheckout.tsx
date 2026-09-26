@@ -22,17 +22,17 @@ export default function PaymentCheckout() {
   const planDetails: { [key: string]: { name: string; monthly: number; annual: number; annualTotal: number; savings: number } } = {
     basic: {
       name: 'Basic',
-      monthly: 13,
-      annual: 11,
-      annualTotal: 132,
-      savings: 24,
+      monthly: 199,
+      annual: 166,
+      annualTotal: 1990,
+      savings: 398,
     },
     pro: {
       name: 'Pro',
-      monthly: 17,
-      annual: 15,
-      annualTotal: 180,
-      savings: 24,
+      monthly: 349,
+      annual: 291,
+      annualTotal: 3490,
+      savings: 698,
     },
   };
 
@@ -246,8 +246,11 @@ export default function PaymentCheckout() {
                     disabled={processing}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {processing ? 'Procesando...' : `Pagar $${totalToday} USD`}
+                    {processing ? 'Procesando...' : `Pagar $${totalToday} MXN`}
                   </button>
+                  <p className="text-xs text-center text-slate-500 dark:text-slate-400 mt-2">
+                    Pago procesado por Mercado Pago
+                  </p>
                 </form>
               </CardContent>
             </Card>
@@ -272,25 +275,25 @@ export default function PaymentCheckout() {
                 <div className="border-t border-slate-200 dark:border-slate-700 pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-600 dark:text-slate-400">Subtotal:</span>
-                    <span className="text-slate-900 dark:text-white">${totalToday} USD</span>
+                    <span className="text-slate-900 dark:text-white">${totalToday} MXN</span>
                   </div>
                   {paymentData.billingPeriod === 'annual' && (
                     <div className="flex justify-between text-sm">
                       <span className="text-emerald-600 dark:text-emerald-400">Ahorro anual:</span>
-                      <span className="text-emerald-600 dark:text-emerald-400">-${currentPlan.savings} USD</span>
+                      <span className="text-emerald-600 dark:text-emerald-400">-${currentPlan.savings} MXN</span>
                     </div>
                   )}
                   <div className="flex justify-between font-semibold text-lg pt-2 border-t border-slate-200 dark:border-slate-700">
                     <span className="text-slate-900 dark:text-white">Total hoy:</span>
-                    <span className="text-emerald-600 dark:text-emerald-400">${totalToday} USD</span>
+                    <span className="text-emerald-600 dark:text-emerald-400">${totalToday} MXN</span>
                   </div>
                 </div>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <p className="text-sm text-blue-900 dark:text-blue-100">
                     {paymentData.billingPeriod === 'monthly' 
-                      ? `Se te cobrará $${currentPlan.monthly} USD cada mes.`
-                      : `Pago único de $${currentPlan.annualTotal} USD por 12 meses (equivalente a $${currentPlan.annual} USD/mes).`
+                      ? `Se te cobrará $${currentPlan.monthly} MXN cada mes.`
+                      : `Pago único de $${currentPlan.annualTotal} MXN por 12 meses (equivalente a $${currentPlan.annual} MXN/mes).`
                     }
                   </p>
                   <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">

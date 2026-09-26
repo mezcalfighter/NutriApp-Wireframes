@@ -38,10 +38,9 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
       id: 'basic',
       name: 'Basic',
       badge: { text: 'Basic', variant: 'secondary' as const },
-      price: { monthly: 13, annual: 11 },
-      priceAnnualTotal: 132,
-      savingsAnnual: 24,
-      mxnEquivalent: { monthly: 234, annual: 198 },
+      price: { monthly: 199, annual: 1990 },
+      priceAnnualTotal: 1990,
+      savingsAnnual: 398,
       subtitle: 'Para nutriólogos titulados en Lic. Nutrición o Lic. Nutriología',
       caps: {
         pacientes: 30,
@@ -71,10 +70,9 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
       id: 'pro',
       name: 'Pro',
       badge: { text: 'Más popular', variant: 'default' as const },
-      price: { monthly: 17, annual: 15 },
-      priceAnnualTotal: 180,
-      savingsAnnual: 24,
-      mxnEquivalent: { monthly: 306, annual: 270 },
+      price: { monthly: 349, annual: 3490 },
+      priceAnnualTotal: 3490,
+      savingsAnnual: 698,
       caps: {
         pacientes: 80,
         consultas: 300,
@@ -185,35 +183,26 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
                   <span className="text-4xl font-bold text-slate-900 dark:text-white">
                     ${typeof plan.price === 'number'
                       ? plan.price
-                      : billingPeriod === 'monthly'
-                        ? plan.price.monthly
-                        : plan.price.annual}
+                      : billingPeriod === 'annual' && plan.priceAnnualTotal
+                        ? plan.priceAnnualTotal
+                        : plan.price.monthly}
                   </span>
-                  <span className="text-slate-600 dark:text-slate-400">USD</span>
+                  <span className="text-slate-600 dark:text-slate-400">MXN</span>
                   {(typeof plan.price === 'object' || plan.price > 0) && (
-                    <span className="text-slate-600 dark:text-slate-400">/mes</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {billingPeriod === 'annual' && plan.priceAnnualTotal ? '/año' : '/mes'}
+                    </span>
                   )}
                 </div>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  IVA incluido
+                </p>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
                   {plan.subtitle}
                 </p>
-                {typeof plan.price === 'object' && billingPeriod === 'annual' && plan.priceAnnualTotal && (
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    Cobrado ${plan.priceAnnualTotal}/año
-                  </p>
-                )}
                 {typeof plan.price === 'object' && billingPeriod === 'annual' && plan.savingsAnnual && (
                   <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium mt-1">
-                    Ahorras ${plan.savingsAnnual} USD al año
-                  </p>
-                )}
-                {typeof plan.price === 'object' && plan.mxnEquivalent && (
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    ~$
-                    {billingPeriod === 'monthly'
-                      ? plan.mxnEquivalent.monthly
-                      : plan.mxnEquivalent.annual}{' '}
-                    MXN/mes
+                    Ahorras ${plan.savingsAnnual} MXN al año
                   </p>
                 )}
                 {plan.duration && (
@@ -335,7 +324,7 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
               )}
             </CardContent>
 
-            <CardFooter>
+            <CardFooter className="flex flex-col gap-2">
               <button
                 onClick={plan.cta.action}
                 className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
@@ -348,6 +337,9 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
               >
                 {plan.cta.text}
               </button>
+              <p className="text-xs text-center text-slate-500 dark:text-slate-400">
+                Pago procesado por Mercado Pago
+              </p>
             </CardFooter>
           </Card>
         ))}
@@ -399,7 +391,7 @@ export default function PricingSection({ showTitle = true, className = '' }: Pri
       <div className="max-w-4xl mx-auto">
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
           <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-            Students requiere correo institucional y tiene vigencia de 6 meses. Basic y Pro requieren cédula profesional en Lic. Nutrición o Lic. Nutriología. <span className="font-medium">Todos los planes son para un nutriólogo por cuenta</span> e incluyen: cifrado AES-256 · MFA obligatoria · Aviso de privacidad LFPDPPP · Módulo ARCO · Audit log · Eliminación segura NOM-004. SMS y WhatsApp se contabilizan por separado. <span className="font-medium">Pacientes activos:</span> Un paciente cuenta hacia tu límite al aceptar su primera cita y permanece en tu cuenta aunque canceles citas posteriores.
+            Students requiere correo institucional y tiene vigencia de el semestre de tu institución. Basic y Pro requieren cédula profesional en Lic. Nutrición o Lic. Nutriología. <span className="font-medium">Todos los planes son para un nutriólogo por cuenta</span> e incluyen: cifrado AES-256 · MFA obligatoria · Aviso de privacidad LFPDPPP · Módulo ARCO · Audit log · Eliminación segura NOM-004. SMS y WhatsApp se contabilizan por separado. <span className="font-medium">Pacientes activos:</span> Un paciente cuenta hacia tu límite al aceptar su primera cita y permanece en tu cuenta aunque canceles citas posteriores.
           </p>
         </div>
       </div>

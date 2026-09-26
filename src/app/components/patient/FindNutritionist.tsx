@@ -130,11 +130,6 @@ function sortNutritionists(list: Nutritionist[]): Nutritionist[] {
   return [...sponsoredSlice, ...organic, ...remainingSponsored];
 }
 
-function renderStars(rating: number): string {
-  const full = Math.round(rating);
-  return '★'.repeat(full) + '☆'.repeat(5 - full);
-}
-
 // ---------------------------------------------------------------------------
 // Nutritionist card
 // ---------------------------------------------------------------------------
@@ -186,17 +181,6 @@ function NutritionistCard({ nutritionist }: { nutritionist: Nutritionist }) {
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
               {nutritionist.modality}
             </p>
-
-            {/* Rating */}
-            <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="text-sm text-amber-400 tracking-tight leading-none">
-                {renderStars(nutritionist.rating)}
-              </span>
-              <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                {nutritionist.rating}
-              </span>
-              <span className="text-xs text-slate-400">({nutritionist.reviews} reseñas)</span>
-            </div>
 
             {/* Availability & price */}
             <div className="flex items-center justify-between flex-wrap gap-1">

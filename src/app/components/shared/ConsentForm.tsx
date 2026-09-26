@@ -1,27 +1,28 @@
 import { useState } from 'react';
-import { X, FileText, Download, CheckCircle } from 'lucide-react';
+import { FileText, Download, CheckCircle } from 'lucide-react';
 import { Dialog, DialogContent } from '../ui/dialog';
+import { toast } from 'sonner';
+
+const AVISO_VERSION = 'v3.0';
 
 interface ConsentFormProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (notificationConsent: boolean) => void;
   patientName: string;
+  nutritionistName?: string;
 }
 
-export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }: ConsentFormProps) {
+export default function ConsentForm({ isOpen, onClose, onConfirm, patientName, nutritionistName = 'tu nutriólogo' }: ConsentFormProps) {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [notificationsAccepted, setNotificationsAccepted] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
-  const generateFolio = () => {
-    const year = new Date().getFullYear();
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `ARCO-${year}-${random}`;
-  };
+  const [folio] = useState(() => {
+    const random = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
+    return `DEC-${random}`;
+  });
 
   const handleConfirm = () => {
-    const folio = generateFolio();
     setShowSuccess(true);
 
     setTimeout(() => {
@@ -33,7 +34,7 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
   };
 
   const handleDownload = () => {
-    alert('En una aplicación real, esto descargaría el Aviso de Privacidad en formato PDF');
+    toast.info('En una aplicación real, esto descargaría el Aviso de Privacidad en formato PDF.');
   };
 
   const currentDateTime = new Date().toLocaleString('es-MX', {
@@ -56,8 +57,11 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               Consentimiento registrado
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
-              Folio #{generateFolio()}
+            <p className="text-slate-600 dark:text-slate-400 text-sm mb-1">
+              Folio: {folio}
+            </p>
+            <p className="text-slate-500 dark:text-slate-500 text-xs">
+              Versión del aviso: {AVISO_VERSION}
             </p>
           </div>
         </DialogContent>
@@ -79,7 +83,7 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
                 Aviso de Privacidad y Consentimiento
               </h2>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Paciente: {patientName}
+                Paciente: {patientName} · Aviso {AVISO_VERSION}
               </p>
             </div>
           </div>
@@ -102,8 +106,7 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
                 Responsable del tratamiento de sus datos personales
               </h4>
               <p>
-                NutriApp es responsable del tratamiento de sus datos personales sensibles relacionados
-                con su salud, estado físico y nutrición.
+                El responsable del tratamiento de sus datos personales es su nutriólogo, {nutritionistName}, quien utiliza la plataforma NutriApp para gestionarlos. NutriApp opera la infraestructura por cuenta del nutriólogo y no usa sus datos para fines propios.
               </p>
 
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
@@ -146,16 +149,14 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
               </p>
 
               <p>
-                Para ejercer sus derechos ARCO, puede presentar una solicitud a través de la sección
-                correspondiente en su perfil de paciente. Tenemos un plazo máximo de 20 días hábiles para
-                atender su solicitud.
+                Para ejercer sus derechos ARCO, diríjase directamente a su nutriólogo, quien tiene un plazo de veinte días para atender su solicitud conforme al artículo 31 de la LFPDPPP.
               </p>
 
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
                 Transferencia de datos
               </h4>
               <p>
-                Sus datos personales no serán transferidos a terceros, salvo en los casos previstos en la Ley.
+                Sus datos personales no serán transferidos a terceros, salvo en los casos previstos en la Ley. Para enviarle avisos sobre su expediente y sus solicitudes utilizamos un proveedor de mensajería que actúa como encargado y no accede a contenido clínico.
               </p>
 
               <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
@@ -188,23 +189,31 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName }:
             </span>
           </label>
 
-          {/* Optional Checkbox */}
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <div className="relative flex items-center justify-center mt-0.5">
-              <input
-                type="checkbox"
-                checked={notificationsAccepted}
-                onChange={(e) => setNotificationsAccepted(e.target.checked)}
-                className="w-5 h-5 rounded border-2 border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 cursor-pointer"
-              />
-            </div>
-            <span className="text-sm text-slate-700 dark:text-slate-300 flex-1">
-              Acepto recibir notificaciones por SMS y WhatsApp relacionadas con mi expediente
-            </span>
-          </label>
+          {/* Optional SMS/WhatsApp Checkbox */}
+          <div>
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="relative flex items-center justify-center mt-0.5">
+                <input
+                  type="checkbox"
+                  checked={notificationsAccepted}
+                  onChange={(e) => setNotificationsAccepted(e.target.checked)}
+                  className="w-5 h-5 rounded border-2 border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 cursor-pointer"
+                />
+              </div>
+              <span className="text-sm text-slate-700 dark:text-slate-300 flex-1">
+                Acepto recibir notificaciones adicionales por SMS y WhatsApp relacionadas con mi expediente
+              </span>
+            </label>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 ml-8">
+              Los avisos sobre tu expediente y tus solicitudes llegarán siempre a tu correo verificado.
+            </p>
+          </div>
 
-          {/* Timestamp */}
-          <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+          {/* Timestamp & Folio */}
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-700 space-y-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Folio: {folio} · Aviso {AVISO_VERSION}
+            </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Registro: {currentDateTime}
             </p>

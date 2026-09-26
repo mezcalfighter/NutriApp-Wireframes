@@ -1,5 +1,9 @@
 # NutriApp - Esquema de Base de Datos
 
+> **⚠ DOCUMENTO LEGADO — NO USAR COMO REFERENCIA**
+> Este esquema fue reemplazado por `/workspaces/default/code/modelo.md` (v2, septiembre 2026).
+> Las definiciones aquí pueden contradecir el modelo vigente. Consulta `modelo.md` para diseño nuevo.
+
 ## Arquitectura
 
 NutriApp utiliza una arquitectura de tres capas:

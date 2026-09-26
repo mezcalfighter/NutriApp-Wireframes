@@ -107,7 +107,8 @@ const getRandomDate = (startYear: number, endYear: number): string => {
 };
 
 const getRandomItem = <T,>(array: T[]): T => {
-  return array[Math.floor(Math.random() * array.length)];
+  const index = Math.abs(Math.floor(Math.random() * array.length)) % array.length;
+  return array[index];
 };
 
 // Generate realistic weight based on height, age, and gender
@@ -220,8 +221,9 @@ export const generateConsistentDemoPatients = (seed: string, count: number = 10)
   }
 
   // Use hash to seed Math.random replacement
+  // Double-modulo keeps hash non-negative even when JS bitwise ops produce negatives.
   const seededRandom = () => {
-    hash = (hash * 9301 + 49297) % 233280;
+    hash = ((hash * 9301 + 49297) % 233280 + 233280) % 233280;
     return hash / 233280;
   };
 

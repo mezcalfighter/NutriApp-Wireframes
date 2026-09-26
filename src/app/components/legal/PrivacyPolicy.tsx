@@ -128,7 +128,7 @@ export default function PrivacyPolicy() {
         <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
           Para ejercer sus derechos ARCO puede acceder al módulo correspondiente en su panel de control
           dentro de NutriApp, o contactarnos directamente a privacidad@nutriapp.com. Responderemos en
-          un plazo máximo de 20 días hábiles conforme a la ley.
+          un plazo máximo de veinte días conforme al artículo 31 de la LFPDPPP.
         </p>
 
         {/* 7. Cambios al aviso */}

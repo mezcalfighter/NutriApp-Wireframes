@@ -180,7 +180,7 @@ export default function StudentsPage() {
                 <p className="text-sm mb-2">
                   <strong>No puedes agregar más pacientes</strong> ni modificar los datos de los pacientes ficticios. Esta limitación te permite practicar en un entorno seguro sin comprometer datos personales reales.
                 </p>
-                <h4 className="font-semibold mt-3 mb-1">Vigencia: 6 meses</h4>
+                <h4 className="font-semibold mt-3 mb-1">Vigencia: el semestre de tu institución</h4>
                 <p className="text-sm">
                   Recibirás aviso por email 24 horas antes del vencimiento. Si no migras a un plan de pago, tu cuenta y todos los datos de práctica serán eliminados automáticamente conforme a NOM-004-SSA3-2012.
                 </p>

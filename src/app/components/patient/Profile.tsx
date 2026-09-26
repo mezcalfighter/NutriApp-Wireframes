@@ -18,9 +18,9 @@ import { toast } from 'sonner';
 export default function PatientProfile() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
+    name: 'Juan Pérez',
+    email: 'juan.perez@correo.com',
+    phone: '+52 55 1234 5678',
     age: '35',
     bloodType: 'O+',
     height: '175',
@@ -61,7 +61,7 @@ export default function PatientProfile() {
     console.log('ARCO request submitted:', { type, folio });
 
     toast.success(
-      `Tu solicitud fue recibida. Folio: ${folio}. Recibirás respuesta en un máximo de 20 días hábiles conforme a la LFPDPPP.`,
+      `Tu solicitud fue recibida. Folio: ${folio}. Recibirás respuesta en tu correo verificado en un máximo de veinte días conforme a la LFPDPPP.`,
       { duration: 6000 }
     );
 
@@ -74,14 +74,21 @@ export default function PatientProfile() {
       id: 'acceso',
       icon: Eye,
       title: 'Acceso',
-      description: 'Solicitar copia de todos mis datos registrados',
+      description: 'Solicitar copia de todos mis datos registrados en el sistema',
       color: 'blue',
+    },
+    {
+      id: 'rectificacion',
+      icon: Edit,
+      title: 'Rectificación',
+      description: 'Solicitar la corrección de mis datos cuando sean inexactos o estén desactualizados',
+      color: 'amber',
     },
     {
       id: 'cancelacion',
       icon: Trash2,
       title: 'Cancelación',
-      description: 'Solicitar eliminación de mis datos personales',
+      description: 'Solicitar el bloqueo de mis datos personales conforme a la normativa',
       color: 'red',
     },
     {
@@ -95,7 +102,7 @@ export default function PatientProfile() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
-      <Header title="My Profile" showMenu />
+      <Header title="Mi Perfil" showMenu />
 
       <form onSubmit={handleSubmit} className="p-4 space-y-6">
         <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm text-center">
@@ -103,7 +110,7 @@ export default function PatientProfile() {
             <User className="w-12 h-12 text-emerald-700 dark:text-emerald-400" />
           </div>
           <h2 className="text-slate-900 dark:text-white mb-1">{formData.name}</h2>
-          <p className="text-slate-500 dark:text-slate-400">Patient</p>
+          <p className="text-slate-500 dark:text-slate-400">Paciente</p>
         </div>
 
         {/* Info Banner */}
@@ -122,10 +129,10 @@ export default function PatientProfile() {
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm space-y-4">
-          <h3 className="text-slate-900 dark:text-white">Personal Information</h3>
+          <h3 className="text-slate-900 dark:text-white">Información personal</h3>
 
           <div>
-            <label className="block text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+            <label className="block text-slate-700 dark:text-slate-300 mb-2">Nombre completo</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
               <input
@@ -139,7 +146,7 @@ export default function PatientProfile() {
           </div>
 
           <div>
-            <label className="block text-slate-700 dark:text-slate-300 mb-2">Email</label>
+            <label className="block text-slate-700 dark:text-slate-300 mb-2">Correo electrónico</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
               <input
@@ -153,7 +160,7 @@ export default function PatientProfile() {
           </div>
 
           <div>
-            <label className="block text-slate-700 dark:text-slate-300 mb-2">Phone</label>
+            <label className="block text-slate-700 dark:text-slate-300 mb-2">Teléfono</label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
               <input
@@ -168,11 +175,11 @@ export default function PatientProfile() {
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm space-y-4">
-          <h3 className="text-slate-900 dark:text-white">Health Information</h3>
+          <h3 className="text-slate-900 dark:text-white">Información de salud</h3>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 mb-2">Age</label>
+              <label className="block text-slate-700 dark:text-slate-300 mb-2">Edad</label>
               <div className="relative">
                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
                 <input
@@ -186,7 +193,7 @@ export default function PatientProfile() {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 mb-2">Blood Type</label>
+              <label className="block text-slate-700 dark:text-slate-300 mb-2">Tipo de sangre</label>
               <div className="relative">
                 <Droplet className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
                 <select
@@ -210,7 +217,7 @@ export default function PatientProfile() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 mb-2">Height (cm)</label>
+              <label className="block text-slate-700 dark:text-slate-300 mb-2">Altura (cm)</label>
               <div className="relative">
                 <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
                 <input
@@ -224,7 +231,7 @@ export default function PatientProfile() {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 mb-2">Weight (kg)</label>
+              <label className="block text-slate-700 dark:text-slate-300 mb-2">Peso (kg)</label>
               <div className="relative">
                 <Weight className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
                 <input
@@ -305,8 +312,7 @@ export default function PatientProfile() {
           </div>
 
           <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-            Como titular de datos personales, tienes derecho a Acceder, Cancelar u Oponerte
-            al tratamiento de tu información conforme a la LFPDPPP. Para rectificar tus datos, edita tu perfil directamente arriba.
+            Como titular de datos personales, tienes derecho de Acceso, Rectificación, Cancelación u Oposición (ARCO) conforme a la LFPDPPP. Tu nutriólogo es el responsable de atender estas solicitudes.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -378,9 +384,16 @@ export default function PatientProfile() {
             <AlertDialogTitle className="text-slate-900 dark:text-white">
               Solicitud de Cancelación de Datos
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-slate-600 dark:text-slate-400">
-              Esta acción eliminará permanentemente tu expediente clínico. Una vez procesada, no podrá
-              revertirse. ¿Estás seguro de que deseas continuar?
+            <AlertDialogDescription className="text-slate-600 dark:text-slate-400 space-y-2">
+              <span className="block">
+                Tu solicitud la resolverá tu nutriólogo en un plazo de veinte días. Si procede, tu expediente clínico pasará a estado de bloqueo y se conservará cifrado, sin acceso para la operación diaria, durante los cinco años que la norma exige contar desde tu último acto médico (NOM-004-SSA3-2012, arts. 24 y 25).
+              </span>
+              <span className="block">
+                Tu cuenta, datos de contacto y preferencias se suprimen de inmediato. Al vencer ese plazo, el expediente se elimina de forma definitiva y recibirás el aviso con folio en tu correo verificado.
+              </span>
+              <span className="block font-medium text-slate-700 dark:text-slate-300">
+                ¿Deseas continuar?
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -391,7 +404,7 @@ export default function PatientProfile() {
               onClick={() => submitArcoRequest('cancelacion')}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
-              Confirmar eliminación
+              Enviar solicitud
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

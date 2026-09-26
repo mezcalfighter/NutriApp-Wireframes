@@ -23,7 +23,7 @@ const VALID_CODES: Record<string, InstitutionCode> = {
   },
   'NUTRI-ITES-2026': {
     institution: 'ITESO',
-    program: 'Ingeniería en Alimentos',
+    program: 'Licenciatura en Nutrición',
     domains: ['iteso.mx', 'alumnos.iteso.mx'],
   },
 };
@@ -137,6 +137,10 @@ function Step1({ onNext }: Step1Props) {
       setError('Este código venció el 31 de enero de 2026.');
     } else if (upper === EXHAUSTED_CODE) {
       setError('Este código ya alcanzó su número de usos.');
+    } else if (upper.length >= 6 && !upper.startsWith('NUTRI-')) {
+      setError(
+        'Código inválido. Los códigos de activación comienzan con NUTRI- seguido de letras y números.'
+      );
     } else if (upper.length >= 14) {
       const info = VALID_CODES[upper];
       if (info) {
