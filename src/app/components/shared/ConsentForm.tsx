@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileText, Download, CheckCircle } from 'lucide-react';
+import { FileText, Download, CheckCircle, ClipboardList } from 'lucide-react';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { toast } from 'sonner';
 
@@ -24,13 +24,13 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName, n
 
   const handleConfirm = () => {
     setShowSuccess(true);
+  };
 
-    setTimeout(() => {
-      onConfirm(notificationsAccepted);
-      setShowSuccess(false);
-      setPrivacyAccepted(false);
-      setNotificationsAccepted(false);
-    }, 2000);
+  const handleSuccessClose = () => {
+    onConfirm(notificationsAccepted);
+    setShowSuccess(false);
+    setPrivacyAccepted(false);
+    setNotificationsAccepted(false);
   };
 
   const handleDownload = () => {
@@ -49,20 +49,76 @@ export default function ConsentForm({ isOpen, onClose, onConfirm, patientName, n
   if (showSuccess) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md bg-white dark:bg-slate-900">
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+        <DialogContent className="max-w-lg bg-white dark:bg-slate-900 p-0 gap-0">
+          {/* Success header */}
+          <div className="flex items-center gap-4 p-6 border-b border-slate-200 dark:border-slate-700">
+            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center shrink-0">
+              <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-              Consentimiento registrado
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mb-1">
-              Folio: {folio}
-            </p>
-            <p className="text-slate-500 dark:text-slate-500 text-xs">
-              Versión del aviso: {AVISO_VERSION}
-            </p>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-0.5">
+                <ClipboardList className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  Declaración registrada
+                </h3>
+              </div>
+              <p className="text-sm font-mono text-emerald-600 dark:text-emerald-400 font-semibold tracking-wide">
+                {folio}
+              </p>
+            </div>
+          </div>
+
+          {/* Declaration log */}
+          <div className="p-6">
+            <dl className="divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Titular</dt>
+                <dd className="text-sm font-medium text-slate-900 dark:text-white">{patientName}</dd>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Mecanismo de autenticación</dt>
+                <dd className="text-sm font-medium text-slate-900 dark:text-white">Dispositivo del nutriólogo (firma in situ)</dd>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Versión del aviso</dt>
+                <dd className="text-sm font-medium text-slate-900 dark:text-white">{AVISO_VERSION}</dd>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Fecha y hora</dt>
+                <dd className="text-sm font-medium text-slate-900 dark:text-white">{currentDateTime}</dd>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Notificaciones adicionales</dt>
+                <dd className="text-sm font-medium text-slate-900 dark:text-white">
+                  {notificationsAccepted ? 'Aceptadas' : 'No aceptadas'}
+                </dd>
+              </div>
+              <div className="grid grid-cols-[auto_1fr] gap-x-6 py-3">
+                <dt className="text-sm text-slate-500 dark:text-slate-400 min-w-[180px]">Copia</dt>
+                <dd className="text-sm text-slate-600 dark:text-slate-300">
+                  Copia del aviso disponible para descarga en el expediente del paciente.
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* Footer actions */}
+          <div className="flex flex-col sm:flex-row gap-3 px-6 pb-6 pt-2">
+            <button
+              type="button"
+              onClick={handleDownload}
+              className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Descargar copia PDF
+            </button>
+            <button
+              type="button"
+              onClick={handleSuccessClose}
+              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+            >
+              Cerrar
+            </button>
           </div>
         </DialogContent>
       </Dialog>

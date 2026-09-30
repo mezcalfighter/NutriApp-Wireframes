@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { Heart, Eye, EyeOff, AlertCircle, Upload, ArrowLeft } from 'lucide-react';
+import { Heart, Eye, EyeOff, AlertCircle, Upload, ArrowLeft, GraduationCap } from 'lucide-react';
 import { useApp } from '../../contexts/AppContext';
 
 export default function NutritionistRegister() {
@@ -10,6 +10,53 @@ export default function NutritionistRegister() {
   
   const plan = searchParams.get('plan') || 'basic';
   const upgrade = searchParams.get('upgrade'); // For students upgrading to basic
+
+  // Guard: students plan uses institutional activation code flow
+  if (plan === 'students') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-slate-950 dark:to-slate-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={() => navigate('/pricing')}
+              className="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Volver a planes
+            </button>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-8 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl mb-6">
+              <GraduationCap className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
+              Cuenta para estudiantes
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400 text-sm mb-8 leading-relaxed">
+              Las cuentas para estudiantes de nutrición se activan mediante un código institucional
+              proporcionado por tu universidad. No es posible registrarse directamente.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate('/students-activation')}
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 px-4 rounded-lg transition-colors font-medium mb-4"
+            >
+              Activar con código de mi universidad
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/registro?plan=basic')}
+              className="text-sm text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            >
+              ¿Eres nutriólogo independiente? Regístrate aquí
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const [formData, setFormData] = useState({
     fullName: '',

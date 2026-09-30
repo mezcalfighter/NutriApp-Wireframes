@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import MobileNav from '../shared/MobileNav';
 import Header from '../shared/Header';
-import { FileText, TrendingDown, Calendar, Target, Eye } from 'lucide-react';
+import { FileText, TrendingDown, Calendar, Target, Eye, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function PatientDashboard() {
@@ -16,10 +16,12 @@ export default function PatientDashboard() {
   ];
 
   const accessLog = [
-    { id: 1, nutritionist: 'Lic. Andrea Martínez', date: '2026-09-24', time: '10:30', action: 'Consulta' },
-    { id: 2, nutritionist: 'Lic. Andrea Martínez', date: '2026-09-22', time: '09:15', action: 'Modificación' },
-    { id: 3, nutritionist: 'Lic. Andrea Martínez', date: '2026-09-15', time: '16:45', action: 'Descarga' },
-    { id: 4, nutritionist: 'Lic. Andrea Martínez', date: '2026-09-08', time: '11:00', action: 'Consulta' },
+    { id: '1', nutritionist: 'Lic. Andrea Martínez', date: '2026-09-24', time: '10:30', action: 'Consulta', outcome: 'exitoso' as const },
+    { id: '2', nutritionist: 'Lic. Andrea Martínez', date: '2026-09-22', time: '09:15', action: 'Modificación', outcome: 'exitoso' as const },
+    { id: 'fail-1', nutritionist: 'Dr. Roberto Méndez', date: '28 sep 2026', time: '09:14', action: 'Acceso', outcome: 'denegado' as const, reason: 'Sin consentimiento vigente' },
+    { id: '3', nutritionist: 'Lic. Andrea Martínez', date: '2026-09-15', time: '16:45', action: 'Descarga', outcome: 'exitoso' as const },
+    { id: 'fail-2', nutritionist: 'Sistema', date: '26 sep 2026', time: '23:58', action: 'Exportación', outcome: 'denegado' as const, reason: 'Fuera de horario autorizado' },
+    { id: '4', nutritionist: 'Lic. Andrea Martínez', date: '2026-09-08', time: '11:00', action: 'Consulta', outcome: 'exitoso' as const },
   ];
 
   const getActionChip = (action: string) => {
@@ -223,22 +225,31 @@ export default function PatientDashboard() {
             {accessLog.map((entry) => (
               <div
                 key={entry.id}
-                className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
+                className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
               >
-                <div>
-                  <p className="text-slate-900 dark:text-white text-sm font-medium">
-                    {entry.nutritionist}
-                  </p>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
-                    {new Date(entry.date).toLocaleDateString('es-MX', {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                    })}{' '}
-                    · {entry.time}
-                  </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-900 dark:text-white text-sm font-medium">
+                      {entry.nutritionist}
+                    </p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+                      {entry.date} · {entry.time}
+                    </p>
+                  </div>
+                  {entry.outcome === 'denegado' ? (
+                    <div className="flex items-center gap-1.5">
+                      <XCircle className="w-4 h-4 text-red-500" />
+                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+                        Denegado
+                      </span>
+                    </div>
+                  ) : (
+                    getActionChip(entry.action)
+                  )}
                 </div>
-                {getActionChip(entry.action)}
+                {'reason' in entry && entry.reason && (
+                  <p className="text-xs text-red-500 italic mt-1">{entry.reason}</p>
+                )}
               </div>
             ))}
           </div>

@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import MobileNav from '../shared/MobileNav';
 import Header from '../shared/Header';
-import { Search, Plus, AlertCircle, Users } from 'lucide-react';
+import { Search, Plus, AlertCircle, Users, Bell } from 'lucide-react';
 import { generateConsistentDemoPatients } from '../../utils/generateDemoPatients';
 import { Alert, AlertDescription } from '../ui/alert';
 import { useAuth } from '../../App';
+import { toast } from 'sonner';
 
 interface Patient {
   id: string;
@@ -53,6 +54,23 @@ export default function PatientList() {
     }
     setShowGenerateButton(false);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toast.success(
+        'María González completó el consentimiento remoto — el expediente ya está activo.',
+        { duration: 6000 }
+      );
+      setPatients((prev) =>
+        prev.map((p) =>
+          p.name === 'María Rodríguez' && p.consentStatus === 'pending'
+            ? { ...p, consentStatus: 'active' }
+            : p
+        )
+      );
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isStudentsAccount && hasGeneratedData) {
@@ -137,6 +155,14 @@ export default function PatientList() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
       <Header title="Pacientes" showBack showNotifications />
+
+      {/* Real-time consent notification banner */}
+      <div className="mx-4 mt-4 flex items-center gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-4 py-3">
+        <Bell className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+        <p className="text-sm text-amber-800 dark:text-amber-200">
+          Consulta en tiempo real activa: recibirás un aviso cuando un paciente complete su consentimiento remoto.
+        </p>
+      </div>
 
       <div className="p-4 space-y-4">
         {/* Students Account - Generate Demo Patients */}

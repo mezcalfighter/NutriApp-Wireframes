@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   X,
   AlertTriangle,
+  Paperclip,
 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import {
@@ -117,6 +118,30 @@ export default function PatientDetail() {
       ]);
     }
   }, [id, isStudentsAccount, userEmail]);
+
+  const clinicalNotes = [
+    {
+      id: 'n1',
+      content: 'Paciente refiere mejoría en niveles de energía tras ajuste de plan alimenticio. Se recomienda continuar con el plan actual y aumentar consumo de proteína en el desayuno.',
+      author: 'Lic. Ana García, Nutrióloga',
+      dateTime: '15 de sep. 2026, 10:32',
+      attachment: 'analisis-sangre.pdf',
+    },
+    {
+      id: 'n2',
+      content: 'Se realizó revisión de bitácora alimentaria. Paciente muestra adherencia del 80% al plan. Se ajustaron porciones de carbohidratos para la cena.',
+      author: 'Lic. Ana García, Nutrióloga',
+      dateTime: '1 de sep. 2026, 09:15',
+      attachment: null,
+    },
+    {
+      id: 'n3',
+      content: 'Primera consulta de seguimiento. Se establecieron metas de corto plazo: reducción de 2 kg en 4 semanas y mejora de glucosa en ayuno.',
+      author: 'Lic. Ana García, Nutrióloga',
+      dateTime: '18 de ago. 2026, 11:00',
+      attachment: null,
+    },
+  ];
 
   const arcoRequests: ArcoRequest[] = [
     {
@@ -373,6 +398,49 @@ export default function PatientDetail() {
           </div>
         )}
 
+        {/* Clinical Notes — only shown when consent is active */}
+        {consentStatus === 'active' && (
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <h3 className="text-slate-900 dark:text-white font-semibold">Notas clínicas</h3>
+              </div>
+              <button
+                onClick={() => toast.info('En una aplicación real, aquí podrías agregar notas clínicas con adjuntos.')}
+                className="text-sm bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg transition-colors font-medium"
+              >
+                + Agregar nota
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {clinicalNotes.map((note) => (
+                <div
+                  key={note.id}
+                  className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
+                >
+                  <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed mb-2">
+                    {note.content}
+                  </p>
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">{note.author}</p>
+                      <p className="text-slate-400 dark:text-slate-500 text-xs">{note.dateTime}</p>
+                    </div>
+                    {note.attachment && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-xs">
+                        <Paperclip className="w-3 h-3" />
+                        {note.attachment}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Contact Information */}
         <div className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-sm">
           <h3 className="text-slate-900 dark:text-white mb-3 font-semibold">Información de Contacto</h3>
@@ -402,6 +470,21 @@ export default function PatientDetail() {
               <h3 className="text-slate-900 dark:text-white font-semibold">Solicitudes ARCO</h3>
             </div>
           </div>
+
+          {/* ARCO deadline alert — shown when any request has ≤5 days remaining */}
+          {arcoRequests.some((r) => r.daysRemaining <= 5) && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+              <p className="text-red-700 dark:text-red-400 text-sm">
+                Tienes{' '}
+                <span className="font-semibold">
+                  {arcoRequests.filter((r) => r.daysRemaining <= 5).length} solicitud(es) ARCO
+                </span>{' '}
+                con plazo ≤ 5 días hábiles. Responde antes de que venza el plazo del artículo 31 de
+                la LFPDPPP.
+              </p>
+            </div>
+          )}
 
           {arcoRequests.length === 0 ? (
             <div className="text-center py-8">
